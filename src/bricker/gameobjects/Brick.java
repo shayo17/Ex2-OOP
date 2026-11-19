@@ -1,11 +1,18 @@
-package gameobjects;
+package bricker.gameobjects;
 
+import bricker.brick_strategies.CollisionStrategy;
 import danogl.GameObject;
 import danogl.collisions.Collision;
 import danogl.gui.rendering.Renderable;
 import danogl.util.Vector2;
 
-public class Ball extends GameObject {
+public class Brick extends GameObject {
+
+    private int row;
+    private int col;
+    private CollisionStrategy collisionStrategy;
+
+
     /**
      * Construct a new GameObject instance.
      *
@@ -15,16 +22,25 @@ public class Ball extends GameObject {
      * @param renderable    The renderable representing the object. Can be null, in which case
      *                      the GameObject will not be rendered.
      */
-    public Ball(Vector2 topLeftCorner, Vector2 dimensions, Renderable renderable) {
+    public Brick(Vector2 topLeftCorner, Vector2 dimensions,
+                 Renderable renderable, int row, int col, CollisionStrategy collisionStrategy) {
         super(topLeftCorner, dimensions, renderable);
+        this.row = row;
+        this.col = col;
+        this.collisionStrategy = collisionStrategy;
+    }
+
+    public int getRow(){
+        return this.row;
+    }
+    public int getCol(){
+        return this.col;
     }
 
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-
-
-        Vector2 newVel = getVelocity().flipped(collision.getNormal());
-        setVelocity(newVel);
+        this.collisionStrategy.onCollision(this, other);
     }
+
 }
