@@ -42,6 +42,14 @@ public class BrickerGameManager extends GameManager {
     private static final float HEART_SIZE = 10f;
     private static final int TARGET_FRAMERATE = 60;
     private static final float HALF = 0.5f;
+    private static final int NUM_OF_SIDE_WALLS = 2;
+
+    private static final String BRICK_IMAGE_PATH = "assets/brick.png";
+    private static final String PADDLE_IMAGE_PATH = "assets/paddle.png";
+    private static final String BACKGROUND_IMAGE_PATH = "assets/DARK_BG2_small.jpeg";
+    private static final String BALL_IMAGE_PATH = "assets/ball.png";
+    private static final String BALL_SOUND_PATH = "assets/blop.wav";
+    private static final String HEART_IMAGE_PATH = "assets/heart.png";
 
     private final int numOfBricks;
     private final int numOfRows;
@@ -93,8 +101,6 @@ public class BrickerGameManager extends GameManager {
         this.bricksCounter = new Counter(numOfBricks * numOfRows);
 
         windowController.setTargetFramerate(TARGET_FRAMERATE);
-        Vector2 windowDimensions = windowController.getWindowDimensions();
-
         createBackGround(windowDimensions, imageReader);
         createBall(imageReader, soundReader);
         createPaddle(windowDimensions, imageReader, inputListener);
@@ -185,7 +191,7 @@ public class BrickerGameManager extends GameManager {
      * @param soundReader      Used by the strategy factory to read sounds.
      */
     private void createBricks(Vector2 windowDimensions, ImageReader imageReader, SoundReader soundReader) {
-        Renderable brickImage = imageReader.readImage("assets/brick.png", false);
+        Renderable brickImage = imageReader.readImage(BRICK_IMAGE_PATH, false);
         this.bricks = new Brick[numOfRows][numOfBricks];
         StrategyFactory strategyFactory = new StrategyFactory(
                 gameObjects(), bricksCounter, livesCounter, imageReader, soundReader,
@@ -195,7 +201,7 @@ public class BrickerGameManager extends GameManager {
                 new Vector2(HEART_SIZE, HEART_SIZE),
                 BALL_SPEED, MAX_LIVES);
         float totalSpacing = (numOfBricks + 1) * BRICK_SPACING;
-        float brickWidth = (windowDimensions.x() - 2 * WALL_WIDTH - totalSpacing) / numOfBricks;
+        float brickWidth = (windowDimensions.x() - NUM_OF_SIDE_WALLS * WALL_WIDTH - totalSpacing) / numOfBricks;
 
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfBricks; col++) {
@@ -224,7 +230,7 @@ public class BrickerGameManager extends GameManager {
      */
     private void createPaddle(Vector2 windowDimensions, ImageReader imageReader,
                               UserInputListener inputListener) {
-        Renderable paddleImage = imageReader.readImage("assets/paddle.png", false);
+        Renderable paddleImage = imageReader.readImage(PADDLE_IMAGE_PATH, false);
         paddle = new Paddle(Vector2.ZERO, new Vector2(PADDLE_WIDTH, PADDLE_HEIGHT),
                 paddleImage, inputListener, windowDimensions);
         paddle.setCenter(new Vector2(windowDimensions.x() * HALF,
@@ -259,7 +265,7 @@ public class BrickerGameManager extends GameManager {
      * @param imageReader      Used to read the background image.
      */
     private void createBackGround(Vector2 windowDimensions, ImageReader imageReader) {
-        Renderable backGroundImage = imageReader.readImage("assets/DARK_BG2_small.jpeg", false);
+        Renderable backGroundImage = imageReader.readImage(BACKGROUND_IMAGE_PATH, false);
         GameObject backGround = new GameObject(Vector2.ZERO, windowDimensions, backGroundImage);
         gameObjects().addGameObject(backGround, Layer.BACKGROUND);
     }
@@ -272,8 +278,8 @@ public class BrickerGameManager extends GameManager {
      * @param soundReader Used to read the ball's collision sound.
      */
     private void createBall(ImageReader imageReader, SoundReader soundReader) {
-        Renderable ballImage = imageReader.readImage("assets/ball.png", true);
-        Sound collisionSound = soundReader.readSound("assets/blop.wav");
+        Renderable ballImage = imageReader.readImage(BALL_IMAGE_PATH, true);
+        Sound collisionSound = soundReader.readSound(BALL_SOUND_PATH);
         this.ball = new Ball(Vector2.ZERO, new Vector2(BALL_SIZE, BALL_SIZE), ballImage, collisionSound);
         resetBall();
         gameObjects().addGameObject(this.ball);
@@ -301,7 +307,7 @@ public class BrickerGameManager extends GameManager {
      * @param imageReader Used to read the heart image.
      */
     private void createHearts(ImageReader imageReader) {
-        Renderable heartImage = imageReader.readImage("assets/heart.png", true);
+        Renderable heartImage = imageReader.readImage(HEART_IMAGE_PATH, true);
         Vector2 topLeftCorner = new Vector2(
                 WALL_WIDTH + UI_MARGIN + NUMERIC_COUNTER_SIZE + UI_MARGIN,
                 windowDimensions.y() - HEART_SIZE - UI_MARGIN);

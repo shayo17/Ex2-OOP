@@ -43,7 +43,7 @@ public class Brick extends GameObject {
      *
      * @return The row of the brick.
      */
-    public int getRow(){
+    public int getRow() {
         return this.row;
     }
 
@@ -53,7 +53,7 @@ public class Brick extends GameObject {
      *
      * @return The column of the brick.
      */
-    public int getCol(){
+    public int getCol() {
         return this.col;
     }
 
