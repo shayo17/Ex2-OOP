@@ -64,7 +64,8 @@ public class ExtraBallsStrategy extends BasicCollisionStrategy {
     protected void onBrickBroken(Brick brick, GameObject other) {
         Random random = new Random();
         for (int i = 0; i < NUM_OF_PUCK_BALLS; i++) {
-            Puck puck = new Puck(Vector2.ZERO, puckSize, puckImage, collisionSound, windowHeight, gameObjects);
+            Puck puck =
+                    new Puck(Vector2.ZERO, puckSize, puckImage, collisionSound, windowHeight, gameObjects);
             puck.setCenter(brick.getCenter());
             double angle = random.nextDouble() * Math.PI;
             float velocityX = (float) Math.cos(angle) * puckSpeed;

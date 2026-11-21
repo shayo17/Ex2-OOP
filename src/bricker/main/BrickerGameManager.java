@@ -201,7 +201,8 @@ public class BrickerGameManager extends GameManager {
                 new Vector2(HEART_SIZE, HEART_SIZE),
                 BALL_SPEED, MAX_LIVES);
         float totalSpacing = (numOfBricks + 1) * BRICK_SPACING;
-        float brickWidth = (windowDimensions.x() - NUM_OF_SIDE_WALLS * WALL_WIDTH - totalSpacing) / numOfBricks;
+        float brickWidth =
+                (windowDimensions.x() - NUM_OF_SIDE_WALLS * WALL_WIDTH - totalSpacing) / numOfBricks;
 
         for (int row = 0; row < numOfRows; row++) {
             for (int col = 0; col < numOfBricks; col++) {

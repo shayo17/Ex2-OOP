@@ -53,7 +53,8 @@ public class Paddle extends GameObject {
         super.update(deltaTime);
         Vector2 leftCorner = this.getTopLeftCorner();
         if (leftCorner.x() + getDimensions().x() >= windowDimensions.x() - WALL_WIDTH) {
-            this.setTopLeftCorner(new Vector2(windowDimensions.x() - WALL_WIDTH - getDimensions().x(), leftCorner.y()));
+            this.setTopLeftCorner(
+                    new Vector2(windowDimensions.x() - WALL_WIDTH - getDimensions().x(), leftCorner.y()));
         }
         if (leftCorner.x() <= WALL_WIDTH) {
             this.setTopLeftCorner(new Vector2(WALL_WIDTH, leftCorner.y()));
