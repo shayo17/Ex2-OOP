@@ -49,12 +49,11 @@ public class BrickerGameManager extends GameManager {
     private void resetBall() {
         ball.setCenter(windowDimensions.mult(0.5f));
         float ballVelX = BALL_SPEED;
-        float ballVelY = BALL_SPEED;
         Random rand = new Random();
         if (rand.nextBoolean()) {
             ballVelX *= -1;
         }
-        ball.setVelocity(new Vector2(ballVelX, ballVelY));
+        ball.setVelocity(new Vector2(ballVelX, BALL_SPEED));
     }
 
 
@@ -86,7 +85,7 @@ public class BrickerGameManager extends GameManager {
         createBackGround(windowDimensions, imageReader);
 
         // create ball
-        createBall(windowDimensions, imageReader, soundReader);
+        createBall(imageReader, soundReader);
 
         // create paddle
         createPaddle(windowDimensions, imageReader, inputListener);
@@ -185,7 +184,7 @@ public class BrickerGameManager extends GameManager {
 
     }
 
-    private void createBall(Vector2 windowDimensions, ImageReader imageReader, SoundReader soundReader) {
+    private void createBall(ImageReader imageReader, SoundReader soundReader) {
         Renderable ballImage = imageReader.readImage("assets/ball.png", true);
         Sound collisionSound = soundReader.readSound("assets/blop.wav");
         this.ball = new Ball(Vector2.ZERO, new Vector2(BALL_SIZE, BALL_SIZE), ballImage, collisionSound);
