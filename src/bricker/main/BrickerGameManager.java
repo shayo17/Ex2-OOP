@@ -24,8 +24,8 @@ public class BrickerGameManager extends GameManager {
     private static final int PADDLE_HEIGHT = 15;
     private static final int WINDOW_WIDTH = 700;
     private static final int WINDOW_HEIGHT = 500;
-    private static final int DEFAULT_ROWS = 7;
-    private static final int DEFAULT_BRICKS = 8;
+    private static final int DEFAULT_NUM_OF_ROWS = 7;
+    private static final int DEFAULT_NUM_OF_BRICKS = 8;
     private static final int NUM_OF_USER_INPUT = 2;
     private static final float BRICK_HEIGHT = 15;
     private static final float BRICK_SPACING = 2;
@@ -44,6 +44,18 @@ public class BrickerGameManager extends GameManager {
     private Counter livesCounter;
     private Counter bricksCounter;
     private UserInputListener inputListener;
+
+
+    private void resetBall() {
+        ball.setCenter(windowDimensions.mult(0.5f));
+        float ballVelX = BALL_SPEED;
+        float ballVelY = BALL_SPEED;
+        Random rand = new Random();
+        if (rand.nextBoolean()) {
+            ballVelX *= -1;
+        }
+        ball.setVelocity(new Vector2(ballVelX, ballVelY));
+    }
 
 
     public BrickerGameManager(String windowTitle, Vector2 windowDimensions, int numOfBricks, int numOfRows) {
@@ -111,14 +123,7 @@ public class BrickerGameManager extends GameManager {
         } else if (ball.getCenter().y() > windowDimensions.y()) {
             this.livesCounter.decrement();
             if (this.livesCounter.value() > 0) {
-                ball.setCenter(windowDimensions.mult(0.5f));
-                float ballVelX = BALL_SPEED;
-                float ballVelY = BALL_SPEED;
-                Random rand = new Random();
-                if (rand.nextBoolean()) {
-                    ballVelX *= -1;
-                }
-                ball.setVelocity(new Vector2(ballVelX, ballVelY));
+                resetBall();
             } else {
                 if (windowController.openYesNoDialog("You lose! Play again?")) {
                     windowController.resetGame();
@@ -184,16 +189,7 @@ public class BrickerGameManager extends GameManager {
         Renderable ballImage = imageReader.readImage("assets/ball.png", true);
         Sound collisionSound = soundReader.readSound("assets/blop.wav");
         this.ball = new Ball(Vector2.ZERO, new Vector2(BALL_SIZE, BALL_SIZE), ballImage, collisionSound);
-        this.ball.setCenter(windowDimensions.mult(0.5f));
-
-        float ballVelX = BALL_SPEED;
-        float ballVelY = BALL_SPEED;
-        Random rand = new Random();
-        if (rand.nextBoolean()) {
-            ballVelX *= -1;
-        }
-
-        this.ball.setVelocity(new Vector2(ballVelX, ballVelY));
+        resetBall();
         gameObjects().addGameObject(this.ball);
     }
 
@@ -228,15 +224,13 @@ public class BrickerGameManager extends GameManager {
 
     public static void main(String[] args) {
 
-        int numOfBricks = DEFAULT_BRICKS;
-        int numOfRows = DEFAULT_ROWS;
+        int numOfBricks = DEFAULT_NUM_OF_BRICKS;
+        int numOfRows = DEFAULT_NUM_OF_ROWS;
 
         if (args.length == NUM_OF_USER_INPUT){
             numOfBricks = Integer.parseInt(args[0]);
             numOfRows = Integer.parseInt(args[1]);
         }
-
-
         new BrickerGameManager("Bouncing ball", new Vector2(WINDOW_WIDTH,WINDOW_HEIGHT), numOfBricks, numOfRows).run();
     }
 }
